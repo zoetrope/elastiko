@@ -1,16 +1,18 @@
-sudo: false
-language: kotlin
+sudo: required
+
+language: java
+
 jdk: oraclejdk8
+
+services:
+  - docker
+
 env:
   matrix:
     - ES_VERSION=2.1.1
+
 before_script:
-  - mkdir ${HOME}/elasticsearch
-  - wget http://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/${ES_VERSION}/elasticsearch-${ES_VERSION}.tar.gz
-  - tar -xzvf elasticsearch-${ES_VERSION}.tar.gz -C ${HOME}/elasticsearch
-  - ls -alFR ${HOME}/elasticsearch
-  - cp config/elasticsearch.yml ${HOME}/elasticsearch/elasticsearch-${ES_VERSION}/config/
-  - cat ${HOME}/elasticsearch/elasticsearch-${ES_VERSION}/config/elasticsearch.yml
-  - ${HOME}/elasticsearch/elasticsearch-${ES_VERSION}/bin/elasticsearch >& /dev/null &
+  - cd testenv
+  - ./setup_testenv.sh
+  - ./start_testenv.sh
   - sleep 15
-script: ./gradlew test
