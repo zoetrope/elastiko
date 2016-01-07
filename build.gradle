@@ -16,7 +16,7 @@ apply plugin: 'application'
 mainClassName = 'HelloKt'
 
 sourceSets {
-    main.kotlin.srcDirs += 'src/main/kotlin'
+    main.kotlin.srcDirs += 'src/examples/kotlin'
 }
 
 repositories {
