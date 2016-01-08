@@ -7,9 +7,9 @@ import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.client.Client
 
-public fun Client.searchAsync(vararg indices: String, block: SearchRequestBuilder.() -> Unit): Promise<SearchResponse, Throwable> {
+public fun Client.searchAsync(vararg indices: String, block: SearchRequestBuilder.() -> Unit): Promise<SearchResponse, Exception> {
 
-    val deferred = deferred<SearchResponse, Throwable>();
+    val deferred = deferred<SearchResponse, Exception>();
     val builder = this.prepareSearch(*indices)
     builder.block()
 
@@ -19,7 +19,7 @@ public fun Client.searchAsync(vararg indices: String, block: SearchRequestBuilde
         }
 
         override fun onFailure(e: Throwable) {
-            deferred.reject(e)
+            deferred.reject(e as Exception)
         }
     })
 
