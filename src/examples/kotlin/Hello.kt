@@ -15,11 +15,11 @@ class Hello {
         }
 
         client.searchAsync("*") {
-            setQuery(bool {
-                must(term("abc", "100"))
-                should(term("def", "100"))
+            setQuery(boolQuery {
+                must(termQuery("abc", "100"))
+                should(termQuery("def", "100"))
             })
-            setPostFilter(range("age"){
+            setPostFilter(rangeQuery("age") {
                 from(20)
                 to(30)
             })

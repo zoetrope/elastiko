@@ -32,11 +32,11 @@ val client = transportClient(listOf(address("host1", 9300),address("host2", 9300
 client.searchAsync("index1", "index2") {
     setTypes("type1", "type2")
     setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-    setQuery(bool {
-        must(term("field1", "test"))
-        should(term("field2", "sample"))
+    setQuery(boolQuery {
+        must(termQuery("field1", "test"))
+        should(termQuery("field2", "sample"))
     })
-    setPostFilter(range("age"){
+    setPostFilter(rangeQuery("age"){
         from(12)
         to(18)
     })
@@ -49,7 +49,7 @@ client.searchAsync("index1", "index2") {
         println(it.source)
     }
 } fail {
-    println("fail")
+    println("fail: ${it}")
 }
 ```
 
