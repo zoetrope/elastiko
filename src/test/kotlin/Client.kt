@@ -1,16 +1,11 @@
 import elastiko.*
-import nl.komponents.kovenant.*
-import nl.komponents.kovenant.functional.withContext
-import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest
-import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequestBuilder
-import org.elasticsearch.client.ClusterAdminClient
+import nl.komponents.kovenant.DirectDispatcher
+import nl.komponents.kovenant.Kovenant
+import nl.komponents.kovenant.functional.bind
 import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.index.query.QueryBuilders
-import kotlin.test.assertEquals
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.assertEquals
-import nl.komponents.kovenant.functional.bind
 
 class ClientTest {
     @Before fun setup() {
@@ -33,20 +28,16 @@ class ClientTest {
     }
 
     @Test fun createTransportClient() {
-
         val client = transportClient(listOf(address("localhost", 9350))) {
             settings {
                 put("cluster.name", "elasticsearch")
             }
         }
 
-        val h = client.admin().cluster().prepareHealth("bank").execute().actionGet()
-        println("h: $h")
-
-        client.admin().cluster().healthAsync("bank") {
+        val promise = client.admin().cluster().healthAsync("bank") {
             setTimeout(TimeValue.timeValueSeconds(5))
         } bind {
-            println("success: ${it.status}")
+            println("success: $it")
             client.searchAsync("bank") {
                 setTimeout(TimeValue.timeValueSeconds(5))
                 setQuery(QueryBuilders.matchAllQuery())
@@ -54,16 +45,10 @@ class ClientTest {
                 setSize(30)
                 setExplain(true)
             }
-        } success {
-            println("success: ${it.hits.totalHits}")
-        } fail {
-            println("fail1: $it")
         }
 
-        println("hoge")
+        println(promise.get())
 
-        Thread.sleep(3000)
-
-        //        node.close()
+        client.close()
     }
 }
