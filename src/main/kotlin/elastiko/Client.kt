@@ -30,6 +30,24 @@ public fun transportClient(nodes: List<TransportAddress>, block: TransportClient
     return client
 }
 
+public fun <T : AutoCloseable, R> T.use(block: (T) -> R): R {
+    var closed = false
+    try {
+        return block(this)
+    } catch (e: Exception) {
+        closed = true
+        try {
+            close()
+        } catch (closeException: Exception) {
+        }
+        throw e
+    } finally {
+        if (!closed) {
+            close()
+        }
+    }
+}
+
 public fun NodeBuilder.settings(block: Settings.Builder.() -> Unit) {
     val set = Settings.settingsBuilder()
             .apply { block() }

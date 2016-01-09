@@ -6,7 +6,6 @@ fun main(args: Array<String>) {
             put("cluster.name", "elasticsearch")
         }
     }
-
     client.searchAsync("*") {
         setQuery(boolQuery {
             must(termQuery("abc", "100"))
@@ -27,8 +26,9 @@ fun main(args: Array<String>) {
             println(it.source)
         }
     } fail {
-        println("fail")
         it.printStackTrace()
+    } always {
+        client.close()
     }
     Thread.sleep(5000)
 }

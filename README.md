@@ -49,7 +49,9 @@ client.searchAsync("index1", "index2") {
         println(it.source)
     }
 } fail {
-    println("fail: ${it}")
+    it.printStackTrace()
+} always {
+    client.close()
 }
 ```
 
