@@ -44,16 +44,16 @@ public fun geoWithinQuery(name: String, indexedShapeId: String, indexedShapeType
 public fun geoWithinQuery(name: String, shape: ShapeBuilder, block: GeoShapeQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.geoWithinQuery(name, shape).apply { block() }
 public fun hasChildQuery(type: String, query: QueryBuilder, block: HasChildQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.hasChildQuery(type, query).apply { block() }
 public fun hasParentQuery(type: String, query: QueryBuilder, block: HasParentQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.hasParentQuery(type, query).apply { block() }
-public fun idsQuery(types: Array<out String?>, block: IdsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.idsQuery(*types).apply { block() }
-public fun indicesQuery(queryBuilder: QueryBuilder, indices: Array<out String>, block: IndicesQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.indicesQuery(queryBuilder, *indices).apply { block() }
+public fun idsQuery(vararg types: String?, block: IdsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.idsQuery(*types).apply { block() }
+public fun indicesQuery(queryBuilder: QueryBuilder, vararg indices: String, block: IndicesQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.indicesQuery(queryBuilder, *indices).apply { block() }
 public fun matchQuery(name: String, text: Any, block: MatchQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.matchQuery(name, text).apply { block() }
 public fun matchAllQuery(block: MatchAllQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.matchAllQuery().apply { block() }
 public fun matchPhraseQuery(name: String, text: Any, block: MatchQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.matchPhraseQuery(name, text).apply { block() }
 public fun matchPhrasePrefixQuery(name: String, text: Any, block: MatchQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.matchPhrasePrefixQuery(name, text).apply { block() }
 public fun missingQuery(name: String, block: MissingQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.missingQuery(name).apply { block() }
 public fun moreLikeThisQuery(block: MoreLikeThisQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.moreLikeThisQuery().apply { block() }
-public fun moreLikeThisQuery(fields: Array<out String>, block: MoreLikeThisQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.moreLikeThisQuery(*fields).apply { block() }
-public fun multiMatchQuery(name: Any, fieldNames: Array<out String>, block: MultiMatchQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.multiMatchQuery(name, *fieldNames).apply { block() }
+public fun moreLikeThisQuery(vararg fields: String, block: MoreLikeThisQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.moreLikeThisQuery(*fields).apply { block() }
+public fun multiMatchQuery(name: Any, vararg fieldNames: String, block: MultiMatchQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.multiMatchQuery(name, *fieldNames).apply { block() }
 public fun nestedQuery(path: String, query: QueryBuilder, block: NestedQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.nestedQuery(path, query).apply { block() }
 public fun prefixQuery(name: String, prefix: String, block: PrefixQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.prefixQuery(name, prefix).apply { block() }
 public fun queryStringQuery(queryString: String, block: QueryStringQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.queryStringQuery(queryString).apply { block() }
@@ -82,8 +82,8 @@ public fun termQuery(name: String, value: Float, block: TermQueryBuilder.() -> U
 public fun termQuery(name: String, value: Int, block: TermQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termQuery(name, value).apply { block() }
 public fun termQuery(name: String, value: Long, block: TermQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termQuery(name, value).apply { block() }
 public fun termQuery(name: String, value: String, block: TermQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termQuery(name, value).apply { block() }
-public fun termsQuery(name: String, values: Array<out Any>, block: TermsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termsQuery(name, values).apply { block() }
-public fun termsQuery(name: String, values: Array<out String>, block: TermsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termsQuery(name, values).apply { block() }
+public fun termsQuery(name: String, vararg values: Any, block: TermsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termsQuery(name, values).apply { block() }
+public fun termsQuery(name: String, vararg values: String, block: TermsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termsQuery(name, values).apply { block() }
 public fun termsQuery(name: String, values: Collection<*>, block: TermsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termsQuery(name, values).apply { block() }
 public fun termsQuery(name: String, values: DoubleArray, block: TermsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termsQuery(name, values).apply { block() }
 public fun termsQuery(name: String, values: FloatArray, block: TermsQueryBuilder.() -> Unit = fun() = Unit): QueryBuilder = QueryBuilders.termsQuery(name, values).apply { block() }
