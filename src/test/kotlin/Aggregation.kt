@@ -3,12 +3,14 @@ import nl.komponents.kovenant.DirectDispatcher
 import nl.komponents.kovenant.Kovenant
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.unit.TimeValue
+import org.elasticsearch.search.aggregations.bucket.terms.Terms
+import org.elasticsearch.search.aggregations.metrics.avg.Avg
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class SearchTest {
+class AggregationTest {
     lateinit private var client: Client
 
     @Before fun setup() {
@@ -28,26 +30,36 @@ class SearchTest {
         client.close()
     }
 
-    @Test fun allMatch() {
+    @Test fun avg() {
 
         val p = client.searchAsync("bank"){
             setQuery(matchAllQuery())
-            setTimeout(TimeValue.timeValueSeconds(5))
-        }
-
-        assertEquals(1000, p.get().hits.totalHits)
-    }
-
-    @Test fun range() {
-
-        val p = client.searchAsync("bank"){
-            setQuery(rangeQuery("age"){
-                from(20)
-                to(25)
+            addAggregation(avg("avg_age"){
+                field("age")
             })
             setTimeout(TimeValue.timeValueSeconds(5))
         }
 
-        assertEquals(267, p.get().hits.totalHits)
+        val avg = p.get().aggregations.get<Avg>("avg_age")
+        assertEquals(30.171, avg.value)
+    }
+
+    @Test fun terms() {
+
+        val p = client.searchAsync("bank"){
+            setQuery(matchAllQuery())
+            addAggregation(terms("states"){
+                field("state")
+                size(1000)
+                order(Terms.Order.count(false))
+            })
+            setTimeout(TimeValue.timeValueSeconds(5))
+        }
+
+        val states = p.get().aggregations.get<Terms>("states")
+
+        assertEquals(51, states.buckets.size)
+        assertEquals("tx", states.buckets[0].key)
+        assertEquals(30, states.buckets[0].docCount)
     }
 }
