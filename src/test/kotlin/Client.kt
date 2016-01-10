@@ -1,29 +1,22 @@
-import elastiko.*
+import elastiko.address
+import elastiko.healthAsync
+import elastiko.settings
+import elastiko.transportClient
 import nl.komponents.kovenant.DirectDispatcher
 import nl.komponents.kovenant.Kovenant
-import nl.komponents.kovenant.functional.bind
+import org.elasticsearch.client.transport.NoNodeAvailableException
 import org.elasticsearch.common.unit.TimeValue
-import org.elasticsearch.index.query.QueryBuilders
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExpectedException
+import kotlin.test.assertEquals
 
 class ClientTest {
     @Before fun setup() {
         Kovenant.context {
             callbackContext.dispatcher = DirectDispatcher.instance
             workerContext.dispatcher = DirectDispatcher.instance
-        }
-    }
-
-    @Test fun createNodeClient() {
-
-        val (node, client) = nodeClient {
-            clusterName("elasticsearch")
-            client(true)
-            settings {
-                put("path.home", "./")
-                put("http.enabled", false)
-            }
         }
     }
 
@@ -36,19 +29,25 @@ class ClientTest {
 
         val promise = client.admin().cluster().healthAsync("bank") {
             setTimeout(TimeValue.timeValueSeconds(5))
-        } bind {
-            println("success: $it")
-            client.searchAsync("bank") {
-                setTimeout(TimeValue.timeValueSeconds(5))
-                setQuery(QueryBuilders.matchAllQuery())
-                setFrom(0)
-                setSize(30)
-                setExplain(true)
-            }
         }
 
-        println(promise.get())
+        assertEquals("OK", promise.get().status().toString())
 
+        client.close()
+    }
+
+    @JvmField @Rule val expectRule = ExpectedException.none()
+    @Test fun createTransportClientWithInvalidPort() {
+        expectRule.expect(NoNodeAvailableException::class.java)
+        val client = transportClient(listOf(address("localhost", 9999))) {
+            settings {
+                put("cluster.name", "elasticsearch")
+            }
+        }
+        val promise = client.admin().cluster().healthAsync("bank") {
+            setTimeout(TimeValue.timeValueSeconds(5))
+        }
+        promise.get()
         client.close()
     }
 }
