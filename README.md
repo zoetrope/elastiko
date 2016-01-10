@@ -1,6 +1,3 @@
-
-**Work in progress**
-
 [![Build Status](https://travis-ci.org/zoetrope/elastiko.svg?branch=master)](https://travis-ci.org/zoetrope/elastiko)
 
 # elastiko
@@ -21,6 +18,16 @@ It's a thin wrapper around the Java Elasticsearch client.
 
 ## Install
 
+### Gradle
+
+```
+repositories {
+  maven { url= "http://dl.bintray.com/zoetrope/maven" }
+}
+dependencies {
+  compile "com.github.zoetrope:elastiko:2.1.1-0"
+}
+```
 
 ## Usage
 
