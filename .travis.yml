@@ -15,6 +15,7 @@ before_script:
   - cd testenv
   - ./setup_testenv.sh
   - ./start_testenv.sh
+  - cd ../
   - sleep 15
 
 script: ./gradlew check
