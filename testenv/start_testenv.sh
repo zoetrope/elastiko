@@ -5,4 +5,5 @@ sleep 15
 wget https://github.com/bly2k/files/blob/master/accounts.zip?raw=true -O accounts.zip
 unzip accounts.zip
 curl -XPOST 'localhost:9250/bank/account/_bulk?pretty' --data-binary @accounts.json
-
+rm account.json
+rm accounts.zip
