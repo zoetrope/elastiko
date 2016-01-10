@@ -4,6 +4,6 @@ docker run -d -p 9250:9200 -p 9350:9300 -e "NODE_NAME=es1" --name es1 elastiko/e
 sleep 15
 wget https://github.com/bly2k/files/blob/master/accounts.zip?raw=true -O accounts.zip
 unzip accounts.zip
-curl -XPOST 'localhost:9250/bank/account/_bulk?pretty' --data-binary @accounts.json
-rm account.json
+curl -XPOST 'localhost:9250/bank/account/_bulk?pretty' --data-binary @accounts.json > /dev/null
+rm accounts.json
 rm accounts.zip
