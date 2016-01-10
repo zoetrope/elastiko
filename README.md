@@ -1,9 +1,9 @@
 
 **Work in progress**
 
-# elastiko
+[![Build Status](https://travis-ci.org/zoetrope/elastiko.svg?branch=master)](https://travis-ci.org/zoetrope/elastiko)
 
-[![Build Status](https://travis-ci.org/zoetrope/elastiko.svg)](https://travis-ci.org/zoetrope/elastiko)
+# elastiko
 
 Kotlin Asynchronous Elasticsearch Client.
 It's a thin wrapper around the Java Elasticsearch client.
