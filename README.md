@@ -15,6 +15,7 @@ It's a thin wrapper around the Java Elasticsearch client.
 |elastiko Version|Target Elasticsearch version|
 |-------|---------------------|
 |2.1.1-0|2.1.X|
+|2.2.0-0|2.2.X|
 
 ## Install
 
