@@ -21,6 +21,8 @@ import org.elasticsearch.action.admin.indices.exists.types.TypesExistsRequestBui
 import org.elasticsearch.action.admin.indices.exists.types.TypesExistsResponse
 import org.elasticsearch.action.admin.indices.flush.FlushRequestBuilder
 import org.elasticsearch.action.admin.indices.flush.FlushResponse
+import org.elasticsearch.action.admin.indices.flush.SyncedFlushRequestBuilder
+import org.elasticsearch.action.admin.indices.flush.SyncedFlushResponse
 import org.elasticsearch.action.admin.indices.forcemerge.ForceMergeRequestBuilder
 import org.elasticsearch.action.admin.indices.forcemerge.ForceMergeResponse
 import org.elasticsearch.action.admin.indices.get.GetIndexRequestBuilder
@@ -95,6 +97,7 @@ public fun IndicesAdminClient.recoveriesAsync(vararg indices: String, block: Rec
 public fun IndicesAdminClient.refreshAsync(vararg indices: String, block: RefreshRequestBuilder.() -> Unit): Promise<RefreshResponse, Exception> = prepareRefresh(*indices).apply { block() }.toPromise()
 public fun IndicesAdminClient.segmentsAsync(vararg indices: String, block: IndicesSegmentsRequestBuilder.() -> Unit): Promise<IndicesSegmentResponse, Exception> = prepareSegments(*indices).apply { block() }.toPromise()
 public fun IndicesAdminClient.shardStoresAsync(vararg indices: String, block: IndicesShardStoreRequestBuilder.() -> Unit): Promise<IndicesShardStoresResponse, Exception> = prepareShardStores(*indices).apply { block() }.toPromise()
+public fun IndicesAdminClient.syncedFlushAsync(vararg indices: String,block: SyncedFlushRequestBuilder.() -> Unit): Promise<SyncedFlushResponse, Exception> = prepareSyncedFlush(*indices).apply { block() }.toPromise()
 public fun IndicesAdminClient.statsAsync(vararg indices: String, block: IndicesStatsRequestBuilder.() -> Unit): Promise<IndicesStatsResponse, Exception> = prepareStats(*indices).apply { block() }.toPromise()
 public fun IndicesAdminClient.typesExistsAsync(vararg index: String, block: TypesExistsRequestBuilder.() -> Unit): Promise<TypesExistsResponse, Exception> = prepareTypesExists(*index).apply { block() }.toPromise()
 public fun IndicesAdminClient.updateSettingsAsync(vararg indices: String, block: UpdateSettingsRequestBuilder.() -> Unit): Promise<UpdateSettingsResponse, Exception> = prepareUpdateSettings(*indices).apply { block() }.toPromise()
